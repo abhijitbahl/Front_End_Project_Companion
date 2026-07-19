@@ -1,6 +1,6 @@
 import { ChatMessage, DeployResponse, FileNode, LoginCredentials, LoginResponse, ProjectSummaryResponse, ProjectRequest, ProjectResponse, ProjectMember, ProjectRole, SignupRequest, AuthResponse } from "./types";
 
-const BASE_URL = import.meta.env.VITE_API_URL || "http://api.lovableclone.in";
+const BASE_URL = import.meta.env.VITE_API_URL || "https://api.lovableclone.in";
 
 export const getAuthToken = () => localStorage.getItem("auth_token");
 

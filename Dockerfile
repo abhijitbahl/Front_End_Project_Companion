@@ -4,7 +4,7 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 COPY . .
-ENV VITE_API_URL=http://api.lovableclone.in
+ENV VITE_API_URL=https://api.lovableclone.in
 
 RUN npm run build
 
