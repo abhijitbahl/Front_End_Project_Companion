@@ -34,7 +34,7 @@ export function ProjectsDashboard() {
     const fetchProjects = async () => {
         try {
             const data = await api.getProjects();
-            setProjects(data);
+            setProjects(data.filter(Boolean));
         } catch (error) {
             console.error("Failed to fetch projects:", error);
             toast({
@@ -136,7 +136,7 @@ export function ProjectsDashboard() {
     };
 
     const filteredProjects = projects.filter((project) =>
-        project.name.toLowerCase().includes(searchQuery.toLowerCase())
+        project?.name?.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
     return (
