@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Code, Sparkles, LogOut, RotateCcw, Maximize2, RefreshCw, MoreVertical, Trash, Download, Edit } from "lucide-react";
+import { Code, Sparkles, LogOut, RotateCcw, Maximize2, RefreshCw, MoreVertical, Trash, Download, Edit, Loader2 } from "lucide-react";
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/ui/resizable";
 import { ChatPanel, ChatMessage } from "@/components/ChatPanel";
 import { CodePanel } from "@/components/CodePanel";
@@ -32,6 +32,7 @@ export function ProjectView() {
   const [isLoadingHistory, setIsLoadingHistory] = useState(true);
   const [runtimeError, setRuntimeError] = useState<RuntimeError | null>(null);
   const [project, setProject] = useState<ProjectResponse | null>(null);
+  const [isPublishing, setIsPublishing] = useState(false);
 
   // Rename state
   const [isRenameDialogOpen, setIsRenameDialogOpen] = useState(false);
@@ -87,6 +88,27 @@ export function ProjectView() {
     removeAuthToken();
     removeUserInfo();
     navigate("/login");
+  };
+
+  const handlePublish = async () => {
+    if (!projectId) return;
+    setIsPublishing(true);
+
+    try {
+      const response = await api.deploy(projectId);
+      toast({
+        title: "Published successfully",
+        description: response.previewUrl,
+      });
+    } catch (error) {
+      toast({
+        title: "Publish failed",
+        description: error instanceof Error ? error.message : "Something went wrong",
+        variant: "destructive",
+      });
+    } finally {
+      setIsPublishing(false);
+    }
   };
 
   const handleSendMessage = useCallback((content: string) => {
@@ -398,7 +420,13 @@ Please analyze this error and fix the code to resolve it.`;
               <Button variant="outline" size="sm" className="h-8 text-xs">
                 Upgrade
               </Button>
-              <Button size="sm" className="h-8 text-xs bg-primary hover:bg-primary/90">
+              <Button
+                size="sm"
+                className="h-8 text-xs bg-primary hover:bg-primary/90"
+                onClick={handlePublish}
+                disabled={isPublishing}
+              >
+                {isPublishing && <Loader2 className="w-3 h-3 mr-1 animate-spin" />}
                 Publish
               </Button>
             </>
