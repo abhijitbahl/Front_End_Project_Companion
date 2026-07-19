@@ -82,7 +82,7 @@ export interface ProjectMember {
   userId: number; // Changed to number based on schema
   username: string; // The email/username
   name?: string;
-  role: ProjectRole;
+  projectRole: ProjectRole;
   invitedAt?: string;
 }
 

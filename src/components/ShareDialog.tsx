@@ -70,7 +70,7 @@ export function ShareDialog({ projectId, trigger, open, onOpenChange }: ShareDia
     const handleRoleChange = async (userId: number, newRole: ProjectRole) => {
         try {
             await api.updateMemberRole(projectId, userId, newRole);
-            setMembers(members.map(m => m.userId === userId ? { ...m, role: newRole } : m));
+            setMembers(members.map(m => m.userId === userId ? { ...m, projectRole: newRole } : m));
             toast({ title: "Role updated" });
         } catch (error) {
             toast({ title: "Error", description: "Failed to update role.", variant: "destructive" });
@@ -156,11 +156,11 @@ export function ShareDialog({ projectId, trigger, open, onOpenChange }: ShareDia
                                         <div className="text-xs text-muted-foreground truncate">{member.username}</div>
                                     </div>
 
-                                    {member.role === 'OWNER' ? (
+                                    {member.projectRole === 'OWNER' ? (
                                         <span className="text-xs text-muted-foreground px-2 whitespace-nowrap">Owner</span>
                                     ) : (
                                         <Select
-                                            defaultValue={member.role}
+                                            defaultValue={member.projectRole}
                                             onValueChange={(val) => {
                                                 if (val === 'REMOVE') handleRemoveMember(member.userId);
                                                 else handleRoleChange(member.userId, val as ProjectRole);
