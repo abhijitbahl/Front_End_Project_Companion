@@ -39,9 +39,7 @@ jobs:
           push: true
           provenance: false
           sbom: false
-          tags: |
-            ${{ env.IMAGE_NAME }}:${{ github.sha }}
-            ${{ env.IMAGE_NAME }}:latest
+          tags: ${{ env.IMAGE_NAME }}:${{ github.sha }}
 
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
